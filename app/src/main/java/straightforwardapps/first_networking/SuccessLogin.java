@@ -30,10 +30,11 @@ public class SuccessLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_success_login);
-
         reg_disp = (TextView) findViewById(R.id.reg_disp);
+
         lv = (ListView) findViewById(R.id.lv);
-        reg_disp.setText(getIntent().getStringExtra("regno"));
+        String toptop = getIntent().getStringExtra("regno");
+        reg_disp.setText(toptop);
 
         String lru = "http://192.168.43.38/IWP+SE/API/ConverttoJson.php";
         new JSONTask().execute(lru);
@@ -42,7 +43,7 @@ public class SuccessLogin extends AppCompatActivity {
     /*public void question_load(View view)
     {
         //loginurl = new URL("https://jsonparsingdemo-cec5b.firebaseapp.com/jsonData/moviesDemoItem.txt");//("192.168.43.38/IWP+SE/API/answerJson.php");
-        String lru = "http://192.168.43.38/IWP+SE/API/ConverttoJson.php";
+        String lru = "http://192.168.43.38/IWP+SE/API/FindName.php";
         new JSONTask().execute(lru);
     }*/
 
@@ -50,10 +51,13 @@ public class SuccessLogin extends AppCompatActivity {
     public class JSONTask extends AsyncTask<Object, String, String[]>
     {
 
+        String toptop = getIntent().getStringExtra("regno");
         @Override
         protected String[] doInBackground(Object... urls) {
             HttpURLConnection y = null;
+            HttpURLConnection y1 = null;
             BufferedReader reader = null;
+            BufferedReader reader1 = null;
             try {
                 //Toast.makeText(LoginActivity.this, "Yes", Toast.LENGTH_SHORT).show();
                 URL loginurl = new URL(urls[0].toString());
@@ -73,12 +77,47 @@ public class SuccessLogin extends AppCompatActivity {
                 String lala = buffer.toString();
                 //JSONObject x = new JSONObject(lala);
                 JSONArray par = new JSONArray(lala);
-                String[] boom=new String[par.length()];
+                String[] boom=new String[par.length()+1];
+                boom[0] = "poop";
+                int k=1;
                 for(int i=0; i<par.length(); i++)
                 {
                     JSONObject x = par.getJSONObject(i);
-                    boom[i] = x.getString("ques");
+                    boom[k] = x.getString("ques");k++;
                 }
+
+
+
+                URL loginurl1 = new URL("http://192.168.43.38/IWP+SE/API/FindName.php");
+                y1 = (HttpURLConnection) loginurl1.openConnection();
+                y1.connect();
+
+                InputStream stream1 = y1.getInputStream();
+                reader1 = new BufferedReader(new InputStreamReader(stream1));
+
+                String line1 = "";
+                StringBuffer buffer1 = new StringBuffer( );
+                while((line1=reader1.readLine())!=null)
+                {
+                    buffer1.append(line1);
+                }
+
+                String lala1 = buffer1.toString();
+                JSONArray par1 = new JSONArray(lala1);
+                for(int i=0; i<par1.length(); i++)
+                {
+                    JSONObject x = par1.getJSONObject(i);
+
+                    if(x.getString("RegNo").equals(toptop)) {
+                        boom[0] = x.getString("Name");
+                        break;
+                    }
+                }
+
+
+
+
+
                 return boom;
 
             } catch (MalformedURLException e) {
@@ -104,7 +143,15 @@ public class SuccessLogin extends AppCompatActivity {
         protected void onPostExecute(String[] s) {
             super.onPostExecute(s);
 
-            ArrayAdapter<String> ad = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, s);
+            reg_disp.setText(s[0]);
+
+            String ss[] = new String[s.length-1];
+            int k = 0;
+            for(int i=1; i<s.length; i++)
+            {
+                ss[k] = s[i];k++;
+            }
+            ArrayAdapter<String> ad = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, ss);
             lv.setAdapter(ad);
         }
     }

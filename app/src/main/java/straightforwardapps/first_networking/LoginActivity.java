@@ -72,8 +72,8 @@ public class LoginActivity extends AppCompatActivity
 
     public class SendPostRequest extends AsyncTask<String, Void, String> {
 
-        String us="16bce1111";//regis.getText().toString();
-        String pas="vostro1014";//pass.getText().toString();;
+        String us=regis.getText().toString();
+        String pas=pass.getText().toString();;
 
         protected void onPreExecute(){}
 
