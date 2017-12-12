@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -52,6 +53,7 @@ public class LoginActivity extends AppCompatActivity
 {
     AutoCompleteTextView regis;
     EditText pass;
+    SessionManagement session;
     //URL("http://192.168.43.38/IWP+SE/API/doLogin.php");
     public static final int CONNECTION_TIMEOUT=10000;
     public static final int READ_TIMEOUT=15000;
@@ -63,6 +65,19 @@ public class LoginActivity extends AppCompatActivity
 
         regis = (AutoCompleteTextView) findViewById(R.id.regis);
         pass = (EditText) findViewById(R.id.pass);
+        session = new SessionManagement(getApplicationContext());
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK ) {
+            Intent lo = new Intent(this, MainActivity.class);
+            startActivity(lo);
+            finish();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
     public void logincheck(View view)
@@ -73,7 +88,7 @@ public class LoginActivity extends AppCompatActivity
     public class SendPostRequest extends AsyncTask<String, Void, String> {
 
         String us=regis.getText().toString();
-        String pas=pass.getText().toString();;
+        String pas=pass.getText().toString();
 
         protected void onPreExecute(){}
 
@@ -141,6 +156,7 @@ public class LoginActivity extends AppCompatActivity
             if(result.equals("true"))
             {
                 //Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                session.createLoginSession(us, pas);
                 Intent i = new Intent(getApplicationContext(), SuccessLogin.class);
                 i.putExtra("regno", us);
                 startActivity(i);
