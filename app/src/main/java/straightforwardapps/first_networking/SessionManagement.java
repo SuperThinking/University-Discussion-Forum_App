@@ -29,7 +29,7 @@ public class SessionManagement {
     public static final String KEY_NAME = "name";
 
     // Email address (make variable public to access from outside)
-    public static final String KEY_EMAIL = "email";
+    public static final String KEY_PASS = "email";
 
     // Constructor
     public SessionManagement(Context context){
@@ -49,7 +49,7 @@ public class SessionManagement {
         editor.putString(KEY_NAME, name);
 
         // Storing email in pref
-        editor.putString(KEY_EMAIL, email);
+        editor.putString(KEY_PASS, email);
 
         // commit changes
         editor.commit();
@@ -88,7 +88,7 @@ public class SessionManagement {
         user.put(KEY_NAME, pref.getString(KEY_NAME, null));
 
         // user email id
-        user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
+        user.put(KEY_PASS, pref.getString(KEY_PASS, null));
 
         // return user
         return user;

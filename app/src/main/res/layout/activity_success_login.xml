@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_success_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+
     tools:context="straightforwardapps.first_networking.SuccessLogin"
     android:background="#05044e"
-    android:orientation="vertical">
-    <TableLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    <TableRow>
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/baad"
+        android:visibility="gone"
+        >
+
 <TextView
-    android:layout_width="230dp"
+    android:layout_width="wrap_content"
     android:layout_height="50dp"
     android:textSize="25dp"
-    android:background="#09085c"
     android:textColor="#f9e0e0"
     android:textAlignment="viewStart"
     android:id="@+id/reg_disp" />
@@ -27,20 +29,29 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:text="Logout"
         android:background="#c60202"
         android:textColor="#17173d"
         android:id="@+id/lin"
         android:onClick="logout"
+        android:layout_alignParentRight="true"
         />
-    </TableRow>
-    </TableLayout>
+
+        <Button
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/refresh"
+            android:layout_below="@+id/lin"
+            android:layout_alignRight="@+id/lin"
+            android:layout_marginRight="25dp"
+            android:onClick="refresh"/>
 
     <Space
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:id="@+id/space"
+        android:layout_below="@+id/lin"
         />
 
     <ListView
@@ -48,6 +59,20 @@
         android:layout_height="wrap_content"
         android:id="@+id/lv"
         android:background="#0062ff"
+        android:layout_below="@+id/space"
         >
     </ListView>
-</LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Loading.."
+        android:textAlignment="center"
+        android:textSize="50dp"
+        android:textColor="#fff"
+        android:background="#e021"
+        android:id="@+id/load"
+
+        />
+</RelativeLayout>

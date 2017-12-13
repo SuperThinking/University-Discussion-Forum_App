@@ -1,16 +1,22 @@
 package straightforwardapps.first_networking;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,43 +37,86 @@ public class SuccessLogin extends AppCompatActivity {
 
 
     SessionManagement session;
-    TextView reg_disp;
+    RelativeLayout baad;
+    private static final String TAG = SuccessLogin.class.getSimpleName();
+    TextView reg_disp, load;
+    Boolean dadak=false;
     ListView lv;
     Button lin;
     String regreg="";//getIntent().getStringExtra("regno");;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_success_login);
-        reg_disp = (TextView) findViewById(R.id.reg_disp);
-        lin = (Button) findViewById(R.id.lin);
 
-        session = new SessionManagement(getApplicationContext());
-        session.checkLogin();
+        if(isInternetAvailable(this)) {
+            //new internetcheck().execute();
+            setContentView(R.layout.activity_success_login);
 
-        try {
-            HashMap<String, String> user = session.getUserDetails();
+            //new internetcheck().execute();
 
-            String regnumb = user.get(SessionManagement.KEY_NAME);
-            String email = user.get(SessionManagement.KEY_EMAIL);
 
-            regreg = regnumb;
+            reg_disp = (TextView) findViewById(R.id.reg_disp);
+            baad = (RelativeLayout) findViewById(R.id.baad);
+            lin = (Button) findViewById(R.id.lin);
+            load = (TextView) findViewById(R.id.load);
 
-            lv = (ListView) findViewById(R.id.lv);
-            String toptop = regreg.toString();//getIntent().getStringExtra("regno");
-            reg_disp.setText(toptop);
+            session = new SessionManagement(getApplicationContext());
+            session.checkLogin();
 
-            String lru = "http://192.168.43.38/IWP+SE/API/ConverttoJson.php";
-            new JSONTask().execute(lru);
+            try {
+                HashMap<String, String> user = session.getUserDetails();
+
+                String regnumb = user.get(SessionManagement.KEY_NAME);
+                String email = user.get(SessionManagement.KEY_PASS);
+
+                regreg = regnumb;
+
+                lv = (ListView) findViewById(R.id.lv);
+                String toptop = regreg.toString();//getIntent().getStringExtra("regno");
+                reg_disp.setText(toptop);
+
+                String lru = "http://192.168.43.38/IWP+SE/API/ConverttoJson.php";
+                new JSONTask().execute(lru);
+            } catch (Exception e) {
+                Intent lo = new Intent(this, MainActivity.class);
+                startActivity(lo);
+                finish();
+            }
         }
-        catch (Exception e)
+
+        else
         {
-            Intent lo = new Intent(this, MainActivity.class);
-            startActivity(lo);
+            Toast.makeText(this, "Check Internet", Toast.LENGTH_SHORT).show();
+            Intent a = new Intent(Intent.ACTION_MAIN);
+            a.addCategory(Intent.CATEGORY_HOME);
+            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(a);
             finish();
         }
 
+
     }
+
+
+        public static boolean isInternetAvailable(Context context) {
+            NetworkInfo info = (NetworkInfo) ((ConnectivityManager)
+                    context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+
+            if (info == null) {
+                Log.d(TAG, "no internet connection");
+                return false;
+            } else {
+                if (info.isConnected()) {
+                    Log.d(TAG, " internet connection available...");
+                    return true;
+                } else {
+                    Log.d(TAG, " internet connection");
+                    return true;
+                }
+
+            }
+        }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
@@ -89,50 +138,25 @@ public class SuccessLogin extends AppCompatActivity {
         session.logoutUser();
     }
 
-
-/*
-SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-Editor editor = pref.edit();
-//on the login store the login
-editor.putLong("key_name", "long value");
-editor.commit();
-
-
-
-
-
-
-
-pref.getString("key_name", "");
-
-
-
-
-
-editor.remove("name");
-editor.commit();
-\
-
-https://www.androidhive.info/2012/08/android-session-management-using-shared-preferences/
-
-
-
-
-*
-* */
-
-
-    /*public void question_load(View view)
+    public void refresh(View view)
     {
-        //loginurl = new URL("https://jsonparsingdemo-cec5b.firebaseapp.com/jsonData/moviesDemoItem.txt");//("192.168.43.38/IWP+SE/API/answerJson.php");
-        String lru = "http://192.168.43.38/IWP+SE/API/FindName.php";
+        String lru = "http://192.168.43.38/IWP+SE/API/ConverttoJson.php";
         new JSONTask().execute(lru);
-    }*/
+    }
+
     public class JSONTask extends AsyncTask<Object, String, String[]>
     {
 
         //String toptop = getIntent().getStringExtra("regno");
         String toptop1 = regreg.toString();
+        String[] qid;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            load.setVisibility(View.VISIBLE);
+        }
+
         @Override
         protected String[] doInBackground(Object... urls) {
             HttpURLConnection y = null;
@@ -157,14 +181,19 @@ https://www.androidhive.info/2012/08/android-session-management-using-shared-pre
 
                 String lala = buffer.toString();
                 //JSONObject x = new JSONObject(lala);
+
                 JSONArray par = new JSONArray(lala);
                 String[] boom=new String[par.length()+1];
                 boom[0] = "poop";
+                qid = new String[par.length()+1];
+                qid[0] = "qid";
                 int k=1;
                 for(int i=0; i<par.length(); i++)
                 {
                     JSONObject x = par.getJSONObject(i);
-                    boom[k] = x.getString("ques");k++;
+                    boom[k] = x.getString("ques");
+                    qid[k] = x.getString("Q_id");
+                    k++;
                 }
 
 
@@ -223,20 +252,43 @@ https://www.androidhive.info/2012/08/android-session-management-using-shared-pre
         @Override
         protected void onPostExecute(String[] s) {
             super.onPostExecute(s);
-
+            load.setVisibility(View.GONE);
+            baad.setVisibility(View.VISIBLE);
             reg_disp.setText(s[0]);
-
             String ss[] = new String[s.length-1];
             int k = 0;
             for(int i=1; i<s.length; i++)
             {
                 ss[k] = s[i];k++;
             }
-            ArrayAdapter<String> ad = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, ss);
+            ArrayAdapter<String> ad = new ArrayAdapter<String>(getApplicationContext(), R.layout.questions, ss);
             lv.setAdapter(ad);
+            lv.setDividerHeight(40);
+
+            int x=0;
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent ans = new Intent(getApplicationContext(), AnswerActivity.class);
+
+                    ans.putExtra("qid", qid[i+1]);
+
+                    startActivity(ans);
+                }
+            });
         }
     }
 }
+
+
+
+
+
+
+
+
 
 /*
     public void logincheck(View view)
