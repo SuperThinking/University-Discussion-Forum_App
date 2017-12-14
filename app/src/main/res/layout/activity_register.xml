@@ -80,9 +80,10 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register!"
+        android:text="Register"
         android:layout_below="@+id/space3"
         android:layout_centerHorizontal="true"
+        android:background="#8ab4d9"
         android:onClick="register_start"/>
 
 </RelativeLayout>

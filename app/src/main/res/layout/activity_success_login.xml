@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
 
     tools:context="straightforwardapps.first_networking.SuccessLogin"
-    android:background="#05044e"
+
     android:orientation="vertical"
     >
 
@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/baad"
+        android:background="#bb0e0c84"
         android:visibility="gone"
         >
 
@@ -22,17 +23,20 @@
     android:layout_width="wrap_content"
     android:layout_height="50dp"
     android:textSize="25dp"
-    android:textColor="#f9e0e0"
+    android:layout_marginTop="5dp"
+    android:layout_marginLeft="5dp"
+    android:textColor="#ffe4e4"
     android:textAlignment="viewStart"
-    android:id="@+id/reg_disp" />
+    android:id="@+id/reg_disp"
+    android:text="Vishal Dhawan"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:text="Logout"
-        android:background="#c60202"
-        android:textColor="#17173d"
+        android:background="#be5252"
+        android:textColor="#2a2a8c"
         android:id="@+id/lin"
         android:onClick="logout"
         android:layout_alignParentRight="true"
@@ -58,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/lv"
-        android:background="#0062ff"
+        android:background="#a5bfe9"
         android:layout_below="@+id/space"
         >
     </ListView>
@@ -70,9 +74,8 @@
         android:text="Loading.."
         android:textAlignment="center"
         android:textSize="50dp"
-        android:textColor="#fff"
-        android:background="#e021"
+        android:textColor="#948b8b"
+        android:background="#ee91e9bd"
         android:id="@+id/load"
-
         />
 </RelativeLayout>

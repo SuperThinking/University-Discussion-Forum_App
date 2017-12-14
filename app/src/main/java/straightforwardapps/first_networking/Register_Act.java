@@ -46,6 +46,12 @@ public class Register_Act extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             try {
+
+                if(n1.isEmpty() || n2.isEmpty() || n3.isEmpty() || n4.isEmpty())
+                {
+                    return "null";
+                }
+
                 URL url = new URL("http://192.168.43.38/IWP+SE/API/register.php?name="+n1+"&password="+n2+"&email="+n3+"&user_reg_no="+n4);
                 HttpURLConnection x = (HttpURLConnection) url.openConnection();
                 x.connect();
@@ -74,7 +80,11 @@ public class Register_Act extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            if(s.equals("true"))
+            if(s.equals("null"))
+            {
+                Toast.makeText(getApplicationContext(), "Fields can't be empty.", Toast.LENGTH_SHORT).show();
+            }
+            else if(s.equals("true"))
             {
                 Toast.makeText(getApplicationContext(), "REGISTERED!", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(getApplicationContext(), LoginActivity.class);
@@ -83,7 +93,7 @@ public class Register_Act extends AppCompatActivity {
             }
             else
             {
-                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Already Registered", Toast.LENGTH_SHORT).show();
             }
 
         }

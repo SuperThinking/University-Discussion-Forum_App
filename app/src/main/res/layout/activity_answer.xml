@@ -4,12 +4,32 @@
     android:id="@+id/activity_answer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="straightforwardapps.first_networking.AnswerActivity">
+    tools:context="straightforwardapps.first_networking.AnswerActivity"
+    android:background="#7700391a">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sq"
+        android:textSize="25dp"
+        android:textColor="#000"
+        android:textAlignment="center"
+        android:background="#cbdc2327"
+        android:text="Will lala take class today?"
+        android:paddingBottom="10dp"/>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_below="@+id/sq"
+        android:id="@+id/space"/>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ans"
+        android:layout_below="@+id/space"
+        android:background="#b5bab5ff"
         >
 
     </ListView>
