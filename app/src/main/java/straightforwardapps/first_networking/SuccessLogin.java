@@ -1,12 +1,17 @@
 package straightforwardapps.first_networking;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -44,16 +49,18 @@ public class SuccessLogin extends AppCompatActivity {
     ListView lv;
     Button lin;
     String regreg="";//getIntent().getStringExtra("regno");;
+    android.support.v7.widget.Toolbar tb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-        if(isInternetAvailable(this)) {
+        //if(isInternetAvailable(this)) {
             //new internetcheck().execute();
             setContentView(R.layout.activity_success_login);
 
             //new internetcheck().execute();
+
 
 
             reg_disp = (TextView) findViewById(R.id.reg_disp);
@@ -83,9 +90,9 @@ public class SuccessLogin extends AppCompatActivity {
                 startActivity(lo);
                 finish();
             }
-        }
+        //}
 
-        else
+        /*else
         {
             Toast.makeText(this, "Check Internet", Toast.LENGTH_SHORT).show();
             Intent a = new Intent(Intent.ACTION_MAIN);
@@ -93,8 +100,7 @@ public class SuccessLogin extends AppCompatActivity {
             a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(a);
             finish();
-        }
-
+        }*/
 
     }
 
@@ -121,11 +127,31 @@ public class SuccessLogin extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
         if (keyCode == KeyEvent.KEYCODE_BACK ) {
-            //Toast.makeText(getApplicationContext(), "BACK", Toast.LENGTH_SHORT).show();
-            Intent a = new Intent(Intent.ACTION_MAIN);
-            a.addCategory(Intent.CATEGORY_HOME);
-            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(a);
+
+            AlertDialog.Builder builder;
+            builder = new AlertDialog.Builder(this);
+            builder.setTitle("Really!?")
+                    .setMessage("Are you sure you want to exit?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                            //Toast.makeText(getApplicationContext(), "BACK", Toast.LENGTH_SHORT).show();
+                            Intent a = new Intent(Intent.ACTION_MAIN);
+                            a.addCategory(Intent.CATEGORY_HOME);
+                            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(a);
+                            //return true;
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                            //Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+
             return true;
         }
 
@@ -264,6 +290,7 @@ public class SuccessLogin extends AppCompatActivity {
             ArrayAdapter<String> ad = new ArrayAdapter<String>(getApplicationContext(), R.layout.questions, ss);
             lv.setAdapter(ad);
             lv.setDividerHeight(40);
+
 
             int x=0;
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener()

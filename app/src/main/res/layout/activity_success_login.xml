@@ -2,10 +2,10 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_success_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context="straightforwardapps.first_networking.SuccessLogin"
 
     android:orientation="vertical"
@@ -58,24 +58,47 @@
         android:layout_below="@+id/lin"
         />
 
+
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="4dp"
+            android:layout_below="@+id/space"
+            >
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/lv"
         android:background="#a5bfe9"
-        android:layout_below="@+id/space"
+
         >
+
     </ListView>
+        </android.support.v7.widget.CardView>
     </RelativeLayout>
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="65dp"
+        >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Loading.."
+        android:layout_centerInParent="true"
         android:textAlignment="center"
         android:textSize="50dp"
-        android:textColor="#948b8b"
-        android:background="#ee91e9bd"
+        android:textColor="#1b1818"
+        android:background="#eeffffff"
         android:id="@+id/load"
         />
+    </RelativeLayout>
+
+
+
 </RelativeLayout>

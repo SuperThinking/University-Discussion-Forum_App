@@ -82,6 +82,7 @@ public class LoginActivity extends AppCompatActivity
 
     public void logincheck(View view)
     {
+        //Toast.makeText(getApplicationContext(), "Working", Toast.LENGTH_SHORT).show();
         new SendPostRequest().execute();
     }
 
